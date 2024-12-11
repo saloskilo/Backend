@@ -1,17 +1,20 @@
 const http = require("http");
 const fs = require('fs');
+const url=require('url')
 
 const myServer = http.createServer((req, res) => {
-    fs.appendFile('./logs.txt', `${req.headers.host}\n`, (err) => {
+    fs.appendFile('./logs.txt', `${req.url}\n`, (err) => {
         console.log(err);
     })
-    // console.log(req.headers);
-    switch (req.url) {
+    const myURL=url.parse(req.url,true);
+    console.log(myURL);
+    switch (myURL.pathname) {
         case '/':
             res.end("This is Home page")
             break;
         case '/about':
-            res.end("This is Salman Ali");
+            const userName=myURL.query.myname;
+            res.end(`This is ${userName}`);
             break;
         default: res.end("404 not found");
             break;
