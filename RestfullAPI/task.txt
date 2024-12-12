@@ -1,0 +1,19 @@
+REST API - TASKS
+
+GET /users - rendor html
+GET /api/users - List all users JSON Format
+
+
+GET /user/1 - List a user with id 1
+GET /user/2 - List a user with id 2
+
+Dynamic Path Parameters
+GET /api/user/:id
+:id -> Variable | Dynamic
+
+POST /user - CREATE NEW USER
+
+PATCH /USER/ID EDIT USER WITH ID 
+
+DELETE /USER/ID DELETE USER WITH ID
+
