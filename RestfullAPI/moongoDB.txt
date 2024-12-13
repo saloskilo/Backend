@@ -1,0 +1,7 @@
+Schema: Design the structure 
+
+
+Schema -> Model
+
+
+using Model we do CRUD Operation // create, read, update, delete // get, post, put, delete
