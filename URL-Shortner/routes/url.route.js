@@ -19,8 +19,7 @@ url_router.post("/", async (request, response) => {
     visitHistory: [],
   });
   console.log("short id is : " + shortID);
-  return response.json({ id: shortID });
-});
+  return response.render('home',{id: shortID});});
 
 url_router.get("/:shortid", async (request, response) => {
   const shortid = request.params.shortid;

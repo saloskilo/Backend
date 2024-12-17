@@ -1,9 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const path=require('path');
+const staticRoute=require('./routes/staticRouter')
 const { connectDB } = require("./dbConnection");
 const urlRoute = require("./routes/url.route");
-
+const URL=require('./models/url') // import URL 
 const app = express();
 
 const PORT = 8000;
@@ -18,9 +19,24 @@ mongoose
     console.log(error);
   });
 
+// EJS Engine for server side render 
+app.set('view engine','ejs');
+app.set('views',path.resolve('./views'))
+
 //   MIDDLWARE THAT EXPECT JSON DATA IN THE REQUEST BODY 
 app.use(express.json());
 
+app.use(express.urlencoded({extended: false}))
+
+// ejs rendor // server side render
+app.get('/',async (req,res) => {
+  const urls =await URL.find({});
+  return res.render('home',{
+    urls 
+  })
+})
+
+  ////  
 // Post a new SHORT-URL 
 app.post("/", async (request, response) => {
   const body = request.body;
@@ -35,11 +51,13 @@ app.post("/", async (request, response) => {
     visitHistory: [],
   });
   console.log("short id is : " + shortID);
-  return response.json({ id: shortID });
+  
+  return response.render('home',{id: shortID});
+
 });
 
 // gET A URL WITH SPECIFIC ID 
-app.get("/:shortid", async (request, response) => {
+app.get("/url/:shortid", async (request, response) => {
   const shortid = request.params.shortid;
   const entry = await URL.findOneAndUpdate(
     { shortid },

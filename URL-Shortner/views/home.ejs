@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <!-- Add some basic CSS styling -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #444;
+        margin-bottom: 20px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        max-width: 400px;
+        margin: 0 auto 30px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #007bff;
+        color: #fff;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      p {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 18px;
+        color: #28a745;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>URL SHORTENER</h1>
+
+    <!-- Display generated short ID -->
+    <% if (locals.id) { %>
+    <p>
+      URL Generated:
+      <a href="http://localhost/url/<%= id %>" target="_blank"
+        >http://localhost/url/<%= id %></a
+      >
+    </p>
+    <% } %>
+
+    <!-- Form to submit original URL -->
+    <form method="POST" action="/url">
+      <label for="url">Enter your Original URL</label>
+      <input
+        type="text"
+        name="url"
+        placeholder="https://example.com"
+        required
+      />
+      <button type="submit">Generate</button>
+    </form>
+
+    <!-- Table to display URLs -->
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Redirect URL</th>
+            <th>Short ID</th>
+            <th>Clicks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (urls && urls.length > 0) { %>
+          <% urls.forEach((url, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td>
+              <a href="<%= url.redirectUrl %>" target="_blank">
+                <%= url.redirectUrl %>
+              </a>
+            </td>
+            <td><%= url.shortid %></td>
+            <td><%= url.visitHistory.length %></td>
+          </tr>
+          <% }) %>
+          <% } else { %>
+          <tr>
+            <td colspan="4">No URLs have been generated yet.</td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
