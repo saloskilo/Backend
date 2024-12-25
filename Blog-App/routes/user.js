@@ -5,12 +5,12 @@ const router = Router();
 
 // open signin page 
 router.get('/signin', (req, res) => {
-    return res.render('signin') 
+    return res.render('signin')
 })
 
 // open signup page 
 router.get('/signup', (req, res) => {
-    return res.render('signup') 
+    return res.render('signup')
 })
 
 //create new user from sigup page
@@ -25,14 +25,25 @@ router.post('/signup', async (req, res) => {
 
 // login page to post into db check user if available
 router.post('/signin', async (req, res) => {
-    const { email, password } = req.body;
 
-    const user = await User.matchPassword(email, password);
-    console.log(user)
-    return res.redirect('/');
+    try {
+        const { email, password } = req.body;
+
+        const token = await User.matchPasswordAndGenerateToken(email, password);
+        console.log('Token:' + token);
+        return res.cookie('token', token).redirect('/');
+
+    } catch (error) {
+
+        res.render('signin'),{
+            error:'Incorrect Email or Password'
+        }
+    }
 })
 
-
-
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    return res.redirect('/');
+})
 
 module.exports = router;
